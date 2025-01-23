@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink,useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +10,8 @@ const Register = () => {
   });
 
   const { name, email, password, confirmPassword } = formData;
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,6 +26,7 @@ const Register = () => {
     // Perform registration logic here (e.g., API call)
     console.log('Registering with:', formData);
     alert('Registration Successful!');
+    navigate('/login'); 
   };
 
   return (
