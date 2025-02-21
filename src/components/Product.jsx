@@ -1,22 +1,28 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { useCart } from '../store/StoreContext'
-import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'  // Link is used for navigation.
+import { useCart } from '../store/StoreContext' //useCart allows access to the cart context.
+import { toast } from 'react-toastify' //toast is used for showing notifications.
+import { useNavigate } from 'react-router-dom'
 
 const ProductCard = ({product}) => {
+  const navigate = useNavigate();  // Uses navigate to redirect users
   // console.log('productcard:',product)
-  const {id,image,title,price,description,rating:{rate,count}}=product
+  const {id,image,title,price,description, rating: { rate, count }}=product
 
-  let cardtitle=title.length<=51?title:title.slice(0,50)
+  let cardtitle=title.length<=51?title:title.slice(0,50)  // Shortens the product title if it is too long
 
   let {dispatch}=useCart()
 
+  // If user is not logged in, redirect to login page
+  if (!localStorage.getItem('user')) {
+    navigate('/login');
+  }
+
   // handling addtocart functionality
   function handleAddToCart(product){
-    // console.log(product)
     dispatch({type:"ADD_TO_CART",payload:product})
     toast.success("Added items to the cart")
-  }
+  } // Dispatches an action to add the item to the cart
 
 
   return (

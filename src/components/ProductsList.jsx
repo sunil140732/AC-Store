@@ -25,7 +25,7 @@ const ProductsList = () => {
     setFilters(filterCriteria);
     console.log('Filters applied:', filterCriteria);
 
-    // Filter products based on filterCriteria
+    // Filter products based on category
     const filteredProducts = allProducts.filter((product) => {
 
       return product.category === filterCriteria.category;

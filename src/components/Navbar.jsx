@@ -16,13 +16,15 @@ const Navbar = ({onSearch}) => {
   // Handle search query changes
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
-  };
+  };  // Updates the search query when the user types in the search bar.
 
   // Handle form submission
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     onSearch(query.trim().toLowerCase()); 
-    };
+    }; // Prevents the page from refreshing and triggers the onSearch function.
+
+
     // Handle Logout
     const handleLogout = () => {
         localStorage.removeItem('user'); // Clear user data from localStorage

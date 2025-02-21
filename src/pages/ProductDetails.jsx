@@ -12,6 +12,7 @@ const ProductDetails = () => {
   const [error, setError] = useState(null);
   
   const { dispatch } = useCart();
+  
 
   // Fetch product details
   useEffect(() => {
@@ -43,7 +44,7 @@ const ProductDetails = () => {
       <div className="card p-4 shadow-lg w-100 w-md-75" style={{ maxWidth: '600px'}}>
         <div className="row g-2">
           {/* Image Section */}
-          <div className="col-md-4 col-12 d-flex justify-content-center">
+          <div className="col-md-6 col-12 d-flex justify-content-center">
             <img 
               src={product.image} 
               className="img-fluid rounded mx-auto d-block" 

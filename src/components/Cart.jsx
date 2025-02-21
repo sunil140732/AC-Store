@@ -5,7 +5,7 @@ import { NavLink,useNavigate } from 'react-router-dom';
 const Cart = () => {
   const {state,dispatch}=useCart()
   const {cart}=state
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Uses navigate to redirect users
 
   // If user is not logged in, redirect to login page
   if (!localStorage.getItem('user')) {
