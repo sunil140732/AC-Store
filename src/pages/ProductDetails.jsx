@@ -1,70 +1,72 @@
-import {useState,useEffect} from 'react'
-import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import { useCart } from '../store/StoreContext'
-import { toast } from 'react-toastify'
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useCart } from '../store/StoreContext';
+import { toast } from 'react-toastify';
 
 const ProductDetails = () => {
-    // getting the id from the products
-    const {id}=useParams()
-    const [product,setProduct]=useState({})
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-
-    // useEffect for fetching the data from an Api
-    useEffect(()=>{
-        const fetchproducts=async()=>{
-          try {
-            setLoading(true);
-            const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
-            setProduct(response.data);
-          } catch (error) {
-            setError(error.message);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-
-        // calling the function to fetch the products
-        fetchproducts()
-
-    },[id]) // fetch only once the data at initial load
-
-    // handling addtocart functionality
-    function handleAddToCart(){
-      // console.log(product)
-      dispatch({type:"ADD_TO_CART",payload:product})
-      toast.success("Added items to the cart")
-    }
-
-    const {image,title,price,description}=product
-    let {dispatch}=useCart()
-    
-
-    if (loading) return <h1>Loading...</h1>;
-    if (error) return <h1>Error: {error}</h1>;
+  // Getting the id from the URL params
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   
+  const { dispatch } = useCart();
+
+  // Fetch product details
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
+        setProduct(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  // Handling add to cart functionality
+  function handleAddToCart() {
+    dispatch({ type: "ADD_TO_CART", payload: product });
+    toast.success("Added to cart!");
+  }
+
+  if (loading) return <h1 className="text-center">Loading...</h1>;
+  if (error) return <h1 className="text-center text-danger">Error: {error}</h1>;
+
   return (
-      <div className='container d-flex justify-content-center align-center my-5'>
-        <div class="card my-4 p-4" style={{ width:'700px', height:'350px' }}>
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src={image} class="img-fluid rounded-start" alt="..." style={{width:'100%',height:'250px'}}/>
+    <div className="container d-flex justify-content-center align-items-center my-4">
+      <div className="card p-4 shadow-lg w-100 w-md-75" style={{ maxWidth: '600px'}}>
+        <div className="row g-2">
+          {/* Image Section */}
+          <div className="col-md-4 col-12 d-flex justify-content-center">
+            <img 
+              src={product.image} 
+              className="img-fluid rounded mx-auto d-block" 
+              alt={product.title} 
+              style={{ maxHeight: '200px', objectFit: 'contain',width:'100%' }} 
+            />
           </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">{title}</h5>
-              <p class="card-text">${price}</p>
-              <p class="card-text">{description}</p>
-              <p class="card-text"><small class="btn btn-success" onClick={handleAddToCart}>Add To Cart</small></p>
+
+          {/* Details Section */}
+          <div className="col-md-6 col-12 d-flex flex-column gap-2">
+            <div className="card-body d-flex flex-column h-100" >
+              <h5 className="card-title">{product.title}</h5>
+              <p className="card-text text-muted">${product.price}</p>
+              <p className="card-text">{product.description}</p>
+              <button className="btn btn-success mt-auto w-100" onClick={handleAddToCart}>
+                Add To Cart
+              </button>
             </div>
           </div>
         </div>
       </div>
-      </div>
-  )
+    </div>
+  );
 }
 
-export default ProductDetails   
+export default ProductDetails;
